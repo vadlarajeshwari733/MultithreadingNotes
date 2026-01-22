@@ -574,6 +574,7 @@ What is interrupt()?
 * interrupt() is used to request a thread to stop what it is doing.
 Important:
 interrupt() does NOT forcefully stop a thread.
+it does not stop thread execution forcefully
 It only sends a signal (interrupt request).
 
 t.interrupt();
@@ -878,18 +879,12 @@ synchronized(obj) {
 ✔ Ensures thread safety
 
 🔐 2️⃣ Why is Locking needed?
-
 Without locking:
-
 Two threads access same data
-
 Data becomes inconsistent
-
 Example (ATM 💳)
-
 Two users withdraw money at same time → ❌ wrong balance
 Lock ensures → one withdrawal at a time ✔
-
 3️⃣ Example of Locking
 class Account {
     int balance = 1000;
@@ -899,18 +894,14 @@ class Account {
         System.out.println(balance);
     }
 }
-
-
 ✔ Only one thread can enter withdraw() at a time
 
 ☠️ 4️⃣ What is Deadlock?
-
 👉 Deadlock happens when two or more threads wait forever for each other’s locks.
-
 📌 No thread can proceed
 📌 Program hangs
-
 5️⃣ Deadlock example (very important ⚠️)
+
 class DeadlockDemo {
     static Object lock1 = new Object();
     static Object lock2 = new Object();
@@ -949,22 +940,14 @@ T2 holds lock2 → waits for lock1
 ❌ Infinite waiting = Deadlock
 
 6️⃣ Deadlock conditions (Coffman Conditions) ⭐
-
 Deadlock occurs only if ALL 4 conditions exist:
-
 Mutual exclusion – lock held by one thread
-
 Hold and wait – holding one lock, waiting for another
-
 No preemption – lock can’t be taken forcibly
-
 Circular wait – T1 → T2 → T1
-
 7️⃣ How to prevent Deadlock? ✅
 ✔ 1. Lock ordering (Best method)
-
 Always acquire locks in same order
-
 synchronized(lock1) {
     synchronized(lock2) {
         // safe
@@ -972,30 +955,21 @@ synchronized(lock1) {
 }
 
 ✔ 2. Avoid nested locks
-
 Try not to lock multiple objects at once.
-
 ✔ 3. Use tryLock() (Advanced)
-
 From java.util.concurrent.locks
-
 ✔ 4. Use single lock
-
 Simpler design reduces risk.
-
 8️⃣ Locking vs Deadlock (Quick table)
-Locking	Deadlock
+Locking	               Deadlock
 Controls thread access	Stops threads forever
 Required for safety	Programming error
 Improves correctness	Freezes application
 9️⃣ Interview-ready answer ⭐
 
 Locking ensures that only one thread accesses a shared resource at a time, while deadlock is a situation where two or more threads wait indefinitely for each other’s locks, causing the program to freeze.
-
 🔑 One-line memory trick
-
 Locking protects data, Deadlock kills execution
-
 Thread.currentThread() will give number of thread and thread name priority of thread, currently running thread
 Thread.getPriority() 
 maxPriority();
@@ -1024,7 +998,11 @@ setDaemon(true) it must be first before start()
 *If we call start() and run() at a time what will happen?
 java.lang.thread is a default package that is  why we are calling thread methods without creating any Thread object
 
-
+***************************
+***************
+**********
+******
+*
 
 
 
