@@ -1,0 +1,1035 @@
+Multithreading:
+
+*Why we need to learn Multithreading?
+--Reduce response time and to improve the performance
+to work with multi media graphics
+to work with animations
+to develop servers like tomcat web logic 
+Modern computers have multiple CPU cores.
+Multithreading allows a program to run multiple tasks in parallel, making full use of CPU resources.
+Example:
+One thread → calculations
+Another thread → file reading
+Another thread → database calls
+Without multithreading, these tasks run one after another, wasting CPU time.
+Tasks that are independent can run at the same time
+All can happen simultaneously, reducing total execution time.
+In single-threaded programs, long tasks block everything else.
+Handling thousands of users
+Background processing
+Better system stability
+improve performance
+Use CPU efficiently
+Build responsive applications
+ 
+*What is multithreading?
+--Multithreading is a programming concept where multiple threads execute concurrently within a single process to perform multiple tasks at the same time.
+In simple words:
+Doing more than one task simultaneously within the same program is called multithreading.
+Multithreading is a process or concept running multiple threads at a time if we want to 
+do any tasks simultaneously then we will go for Multithreading for example we use our laptop to write programs at a time we draw on paints and note some points on notepad 
+ in multithreading thread is  a light weight process uses multiple processors executes in stack area  to run the task fast and reduce response time 
+
+*What is thread?
+--Thread is a class from java.lang package
+Thread is a light weight execution process which happening inside the  stack area
+Instead of executing tasks one after another  2 threads are parallelly is known as multithreading
+In java every small program has a Thread that is main thread
+if e want to check Thread.currentThread().getName()
+What ever happening in side the stack is called is called thread
+A thread in Java is the smallest unit of execution within a program.
+It represents an independent path of execution that can run concurrently with other threads.
+In simple words:
+A thread allows multiple tasks to run at the same time inside a single program.
+One process can have multiple threads.
+Thread = independent execution path
+Threads run inside a process
+utilizing the cpu in a same time
+
+*Multithreading is a term came from Multitasking
+Multitasking means doing multiple things in a same time
+There are two types of multitasking 
+1)PBM -Process based multitasking -related to CPU
+2)TBM- Thread based Multi tasking -thread
+in PBM each task is a independent program
+in TBM each task is a part of the program
+
+In Java we can create thread in two ways
+1) extending the Thread class
+2) implementing Runnable Interface
+-A normal class is not a Thread class until we implement Runnable or extends Thread but in each class we have the Thread the main 
+
+What is a General Synchronous Process?
+A synchronous process is an execution model where tasks are performed one after another, in a fixed sequence.
+Each task must complete first before the next task starts.
+In simple words:
+One task blocks the next task until it finishes.
+Sequential execution
+Blocking in nature
+Only one task runs at a time
+Whatever functionality we want to run parallelly with main Thread that we need to keep inside the run method overriding from the Thread class
+Thread implements Runnable
+starting the thread causes the objects run run method to be called 
+start() method will call the run()
+if we want to call run() we must need to call start()
+Thread class run() method does not have anything it has just plain implementation of runnable run() we must need to Override that method into our class
+
+*Why we need to Override run()?
+In Java, run() is the method that contains the task (job) a thread should execute.
+When you create a thread, Java does not know what work your thread should do, so you must override run() and define that work.
+Default run() does nothing useful
+The Thread class already has a run() method, but its default implementation is empty (or just calls a target Runnable if provided).
+If you don’t override run():
+The thread will start
+But no code will execute
+start() internally calls run()
+start() → creates a new thread
+JVM internally calls run()
+We override the run() method to define the task that a thread should execute. Without overriding run(), the thread has no job to perform, and calling start() will not execute any meaningful code.
+start() method causes the thread to begin execution the java virtual machine call the run method of this thread
+we can not predict the  out put of the multithreading program
+run()
+ 
+*Why don't we call run method ?
+It contains the task / logic that a thread should execute.
+
+You override this method.
+
+If you call run() directly, it behaves like a normal method call (no new thread).
+
+start()
+
+It is a Thread class method.
+
+It creates a new thread.
+
+It internally calls run().
+JVM asks the OS to create a new thread
+
+JVM performs thread initialization
+
+JVM calls the thread’s run() method
+
+The code inside run() executes in a new thread
+
+👉 You do NOT call run() directly
+👉 JVM calls run() automatically
+* If we call run method directly it runs in main thread
+
+*What happens if a class extends Thread and implements Runnable?
+--thread class already implementing runnable so there is no use of again implementing
+
+*extends Thread is not a recommended approach implements Runnable is good why?
+--Because if we extends a Thread class then we are unable to extend another class because multiple inheritance is not possible in  so if we implements Runnable we extends another class  
+  we can not miss that inheritance 
+Java supports single inheritance
+
+If you extend Thread, you lose the chance to extend any other class.
+
+class MyThread extends Thread {
+
+}
+class MyThread extends Thread extends Employee // ❌ Not allowed
+But with Runnable, you are free to extend another class:
+class MyTask extends Employee implements Runnable {
+    public void run() {
+        // task logic
+    }
+}
+Runnable → what task to run
+Thread → how to run the task
+A Runnable object can be reused by multiple threads.
+Implementing Runnable is preferred over extending Thread because Java supports single inheritance, Runnable allows better design, reusability, and works with the Executor framework, making it suitable for real-world applications.
+
+* If multiple threads are waiting for the execution which thread will executed is decided by the thread scheduler 
+Thread scheduler is  the part of the JVM and we can not expect an exact algorithm followed by Thread Scheduler it varies form JVM to JVM hence we can not expect exact output but we provide several possible outputs 
+
+*Difference between start() and run()?
+
+run() is an abstract method from Runnable interface
+--start() method
+it is a void method and does not take any value and does not return any value 
+it is a instance method we need to call by reference variable 
+
+Creates a new thread
+JVM allocates separate call stack
+Internally calls the run() method
+Executes code concurrently
+Multithreading happens
+Parallel execution
+Called only once per thread
+run() method
+No new thread is created
+Executes like a normal method
+Uses main thread’s stack
+No concurrency
+No multithreading
+No parallel execution
+Feature	                start()	run()
+Creates new thread	✅ Yes	❌ No
+Separate call stack	✅ Yes	❌ No
+Executes concurrently	✅ Yes	❌ No
+JVM involvement	        ✅ Yes	❌ No
+Can be called multiple times	❌ No	✅ Yes (like normal method)
+Calling start() twice causes:
+IllegalThreadStateException
+Interview-ready one-line answer
+start() creates a new thread and internally calls run(), whereas run() executes like a normal method without creating a new thread.
+
+* If we did not Override run() and call start() method which method will execute ?
+The run() method of the Thread class will execute — not your own code.
+Why does this happen?
+start() always calls run()
+If you do not override run(), JVM executes the default run() implementation from the Thread class
+The default run() method does nothing useful
+If the thread was created without a Runnable target → target == null
+So, no code runs
+Thread starts
+No task executed in the new thread
+If we do not override run() and call start(), the JVM executes the default run() method of the Thread class. If no Runnable target is provided, the thread runs but performs no action.
+
+*Difference between Thread and Runnable?
+--What is Thread?
+Thread is a class
+Represents a thread of execution
+Contains thread lifecycle methods: start(), sleep(), join(), etc.
+Used to create and run a thread
+What is Runnable?
+Runnable is a functional interface
+Represents a task/job
+Contains only one method: run()
+Does not create a thread by itself
+Runnable = WHAT to run
+Thread = HOW to run
+Feature	Thread	Runnable
+Type	                   Class	Interface
+Purpose	Creates and controls a thread	Defines the task
+Inheritance	Cannot extend any other class	Can extend another class
+Multiple inheritance	❌ Not possible	✅ Possible
+Reusability	❌ Less reusable	✅ More reusable
+Executor framework	❌ Not supported	✅ Supported
+Memory	Heavy object	Lightweight
+Best practice	❌ Not recommended	✅ Recommended
+Thread is a class that represents a thread of execution, whereas Runnable is an interface that represents a task. Implementing Runnable is preferred because it supports multiple inheritance, better design, reusability, and works with the Executor framework.
+
+
+Why does Java provide wait(), notify(), notifyAll() in Object class and not in Thread class?
+--wait() / notify() are about objects, not threads
+👉 Threads do not wait on threads.
+👉 Threads wait on objects (locks / monitors).
+In Java:
+Every object has an intrinsic lock (monitor)
+A thread acquires an object’s lock
+Then it can:
+wait() → release that object’s lock and go to waiting state
+notify() → wake up a thread waiting on the same object
+📌 Since lock belongs to the object, these methods must belong to Object class.
+Lock is on obj
+Waiting is on obj
+Notification is on obj
+❓ If wait() were in Thread class:
+Which object’s lock would be released?
+Which monitor would be used?
+➡️ This ambiguity is why Java designers did not put them in Thread class.
+Multiple threads
+✔ Single shared object
+✔ Coordination happens through object’s monitor
+This cannot work if wait() were inside Thread.
+4️⃣ Every object can be used as a lock
+Because wait() / notify() are in Object:
+Any object can act as a communication channel
+No need for special thread objects
+Flexible
+✔ Powerful
+✔ Clean design
+
+5️⃣ JVM rule (very important ⚠️)
+
+A thread must own the object’s monitor before calling wait() or notify().
+Otherwise:
+IllegalMonitorStateException
+This rule only makes sense when these methods belong to Object.
+6️⃣ What would go wrong if they were in Thread?
+If wait() were in Thread class:
+Threads would wait on themselves
+No shared communication mechanism
+Producer–consumer, inter-thread communication would break
+🚫 Bad design
+🚫 No object-level coordination
+7️⃣ Interview-ready answer ⭐
+Java provides wait(), notify(), and notifyAll() in the Object class because these methods work on object monitors. Inter-thread communication in Java is based on shared objects and their locks, not on thread objects. Since every object has a monitor, placing these methods in Object allows any object to be used for synchronization.
+🔑 One-line memory trick
+Lock belongs to object → wait/notify belong to Object class
+First understand ONE rule (most important)
+👉 Threads do NOT wait on threads
+👉 Threads wait on OBJECTS
+This single line is the key.
+Everything else comes from this.
+2️⃣ What does “wait” actually mean?
+When a thread calls wait():
+The thread stops executing
+It releases the lock of an object
+It waits until another thread calls notify() on the SAME object
+So the waiting is related to an object, not to a thread.
+3️⃣ Simple real-life example 🪑 (Chair example)
+Imagine:
+🪑 Chair = Object
+👩‍🎓👨‍🎓 Students = Threads
+Rule:
+Students wait for the chair, not for another student.
+If chair is not free:
+Student waits on the chair
+When chair becomes free:
+Another student notifies on the chair
+➡️ Waiting + notifying is happening on the chair (object).
+Object lock = new Object();
+synchronized (lock) {
+    lock.wait();   // thread waits on THIS object
+}
+✔ Thread is waiting
+✔ Waiting is done on lock object
+Another thread:
+java
+Copy code
+synchronized (lock) {
+    lock.notify(); // wakes up waiting thread on SAME object
+}
+✔ Communication happens through object
+
+5️⃣ Why NOT put wait() in Thread class?
+❌ If wait() was in Thread:
+
+java
+Copy code
+t1.wait();
+Now think:
+
+❓ Which lock is released?
+❓ Which object is shared?
+❓ How will another thread notify it?
+👉 No shared object = no communication
+So Thread-based waiting makes no sense.
+6️⃣ Why Object is the correct place ✅
+✔ Every object in Java has a lock
+✔ Multiple threads can share one object
+✔ Threads can coordinate using that shared object
+That’s why Java designers said:
+“Put wait(), notify(), notifyAll() inside Object class”
+So ANY object can be used for communication.
+7️⃣ One more very clear example (ATM 💳)
+ATM machine → Object
+People → Threads
+If ATM is busy:
+Person waits on ATM
+When ATM is free:
+ATM notifies waiting person
+👉 People don’t wait on people
+👉 People wait on ATM (object)
+
+8️⃣ Final simple answer (memorize this ⭐)
+Java put wait(), notify(), and notifyAll() in the Object class because threads communicate by waiting on shared objects. Since locks belong to objects (not threads), these methods must be in the Object class, not in the Thread class.
+
+🔑 One-line shortcut (interview gold)
+Lock belongs to object → wait/notify belong to Object class
+
+* sleep() 
+sleep() in Java — explained very clearly sleep() is a method from thread class it is a static method that's why we must need to call by its call name and it takes milli sec does not return anything
+Let’s go step by step, very simple, no confusion.
+1️⃣ What is sleep()?
+👉 sleep() is used to pause the current thread for a fixed amount of time.
+Thread.sleep(1000); // sleep for 1 second
+✔ Thread stops temporarily
+✔ After time is over, thread automatically resumes
+2️⃣ Who provides sleep()?
+sleep() is a static method of the Thread class
+Thread.sleep(time);
+📌 That means:
+It always affects the currently executing thread
+Not any other thread
+
+3️⃣ Does sleep() release the lock? ❌ (Very important)
+👉 NO
+If a thread holds a lock
+And calls sleep()
+The lock is NOT released
+synchronized(lock) {
+    Thread.sleep(2000); // lock is still held
+}
+Other threads cannot enter this block during sleep.
+
+*4️⃣ sleep() vs wait() (core difference)
+Feature	sleep()	wait()
+Class	Thread	Object
+Releases lock	❌ No	✅ Yes
+Needs synchronized block	❌ No	✅ Yes
+Wake-up	Time-based	notify() / notifyAll()
+Purpose	Pause execution	Inter-thread communication
+5️⃣ Simple real-life example 🕒
+sleep():
+You set an alarm for 10 minutes
+You sleep
+Alarm rings → you wake up automatically
+wait():
+You wait for your friend to call
+Until friend calls (notify()), you don’t wake up
+6️⃣ Example code
+class MyThread extends Thread {
+    public void run() {
+        try {
+            System.out.println("Sleeping...");
+            Thread.sleep(2000);
+            System.out.println("Awake!");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        new MyThread().start();
+    }
+}
+
+Output:
+Sleeping...
+Awake!
+(after 2 seconds)
+
+
+7️⃣ Why sleep() is in Thread class?
+👉 Because:
+Sleeping is related to thread execution
+Not related to object locks
+No communication between threads
+So it belongs in Thread, unlike wait().
+8️⃣ Interview-ready answer ⭐
+sleep() pauses the currently executing thread for a specified time without releasing any locks. It is a static method of the Thread class and is used to slow down execution or simulate delays.
+🔑 One-line memory trick
+sleep = time-based pause, no lock release
+
+
+*1️⃣ What is yield()?
+👉 yield() tells the currently running thread: “I am willing to pause and give other threads of the same priority a chance to execute.” it tells to thread scheduler 
+it is a static method it does not take any value and does not return anything 
+Thread.yield();
+✔ It is only a suggestion to the scheduler
+✔ JVM/OS may ignore it
+
+2️⃣ Who provides yield()?
+yield() is a static method of the Thread class
+Affects current thread only
+Thread.yield();
+3️⃣ What actually happens internally?
+Running thread → moves from Running state to Runnable state
+Scheduler may choose:
+Same thread again ❌
+Another thread of same priority ✅
+⚠️ No guarantee of context switch.
+4️⃣ Does yield() release lock? ❌
+👉 NO
+Just like sleep()
+Lock is still held
+synchronized(lock) {
+    Thread.yield(); // lock NOT released
+}
+
+
+5️⃣ yield() vs sleep() vs wait() (easy table)
+Feature	        yield()	      sleep()	            wait()
+Class	       Thread	       Thread	        Object
+Pause time 	Not defined	Fixed time	Until notify
+Releases lock 	❌ No	         ❌ No	       ✅ Yes
+Scheduler control  Hint only   Forced	Object-based
+Use case	Improve fairness	Delay execution	Thread communication
+6️⃣ Simple real-life example 🚦
+yield():
+You are driving
+You slow down to let another car pass
+You may continue immediately
+sleep():
+You stop your car for 5 minutes
+wait():
+You park and wait until someone calls you
+7️⃣ Example code
+class MyThread extends Thread {
+    public void run() {
+        for(int i = 1; i <= 5; i++) {
+            System.out.println(Thread.currentThread().getName() + " : " + i);
+            Thread.yield();
+        }
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        MyThread t1 = new MyThread();
+        MyThread t2 = new MyThread();
+
+        t1.start();
+        t2.start();
+    }
+}
+📌 Output order is not guaranteed.
+
+8️⃣ When should we use yield()?
+✅ Rarely used in real projects
+✅ Mostly for:
+Testing
+Demonstrations
+Giving CPU chance to other threads
+
+❌ Not reliable for synchronization
+
+9️⃣ Interview-ready answer ⭐
+
+yield() is a static method of the Thread class that temporarily pauses the currently executing thread and gives other threads of the same priority a chance to execute. It does not release locks and provides no guarantee that another thread will run.
+🔑 One-line memory trick
+yield = polite request to scheduler
+
+*What is join()?
+👉 join() is used when one thread wants to wait for another thread to finish.
+In short:
+“Finish your work first, then I will continue.”
+2️⃣ Who provides join()?
+join() is a non-static method of the Thread class
+It is called on a Thread object
+t.join();
+3️⃣ What happens internally?
+When thread A calls:
+t.join();
+Thread A goes into WAITING state
+Thread A waits until thread t completes execution
+After t finishes → thread A resumes
+it also throws InterruptedException 
+4️⃣ Simple real-life example 🎓
+Teacher = main thread
+Student = child thread
+Teacher says:
+“Finish your exam first, then I’ll check papers.”
+That waiting = join()
+5️⃣ Very simple example code
+class MyThread extends Thread {
+    public void run() {
+        for(int i = 1; i <= 3; i++) {
+            System.out.println("Child thread: " + i);
+        }
+    }
+}
+
+public class Test {
+    public static void main(String[] args) throws InterruptedException {
+        MyThread t = new MyThread();
+        t.start();
+        t.join(); // main thread waits here
+        System.out.println("Main thread continues");
+    }
+}
+
+Output:
+Child thread: 1
+Child thread: 2
+Child thread: 3
+Main thread continues
+✔ Main thread waits
+✔ Child thread completes
+✔ Then main thread runs
+
+6️⃣ Does join() release lock? ❌
+👉 No
+join() does not release any locks
+It only blocks the calling thread
+7️⃣ join() with time ⏱️
+t.join(2000); // wait max 2 seconds
+
+
+Main thread waits up to 2 seconds
+
+If thread finishes early → resumes immediately
+
+If not → resumes after timeout
+
+8️⃣ join() vs sleep() vs wait()
+Feature             	join()	                         sleep()	wait()
+Purpose	               Wait for thread to finish	Pause thread	Thread communication
+Class            	Thread	   Thread	                                Object
+Time-based	                 Optional	             Yes	No
+Releases lock	                           ❌ No	❌ No	      ✅ Yes
+9️⃣ Where is join() used in real projects?
+✅ Ensure task order
+✅ Complete background job before continuing
+✅ Example:
+Load data → join()
+Process data → main thread continues
+🔟 Interview-ready answer ⭐
+
+join() is a method of the Thread class that causes the current thread to wait until the specified thread completes execution.
+🔑 One-line memory trick
+join = “wait till you finish”
+*Whenever we call start() method two time over one thread then it throws IlligalThreadStateExceptiion 
+-Thread.currentThread() returning Thread 
+When we call Thread.sleep() it will throw InturruptedException surrounded with try and catch why not throws means if child class throws any exceptions parent class must need to throw child exception or parent exception 
+What is interrupt()?
+
+* interrupt() is used to request a thread to stop what it is doing.
+Important:
+interrupt() does NOT forcefully stop a thread.
+It only sends a signal (interrupt request).
+
+t.interrupt();
+2️⃣ Who provides interrupt()?
+interrupt() is a non-static method of the Thread class
+Called by one thread on another thread
+3️⃣ What happens when a thread is interrupted?
+Case 1️⃣: Thread is in sleep(), wait(), or join()
+👉 JVM throws InterruptedException
+Thread.sleep(1000); // interrupted here
+✔ Thread wakes up
+✔ Exception is thrown
+✔ You must handle it
+Case 2️⃣: Thread is running normally
+👉 No exception is thrown
+👉 Interrupt flag is set to true
+Thread must check the flag manually:
+if (Thread.currentThread().isInterrupted()) {
+    // stop work
+}
+4️⃣ Very simple example (sleep case)
+class MyThread extends Thread {
+    public void run() {
+        try {
+            System.out.println("Thread sleeping...");
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            System.out.println("Thread interrupted!");
+        }
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        MyThread t = new MyThread();
+        t.start();
+
+        t.interrupt(); // interrupting the thread
+    }
+}
+
+Output:
+Thread sleeping...
+Thread interrupted!
+
+5️⃣ Example: Interrupting a running loop
+class MyThread extends Thread {
+    public void run() {
+        while (!Thread.currentThread().isInterrupted()) {
+            System.out.println("Working...");
+        }
+        System.out.println("Stopped safely");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        MyThread t = new MyThread();
+        t.start();
+
+        t.interrupt();
+    }
+}
+
+✔ Clean stop
+✔ No forceful termination
+
+6️⃣ Why stop() is deprecated but interrupt() is not ❌✅
+stop() → kills thread immediately → unsafe
+interrupt() → polite request → safe
+👉 That’s why Java recommends interrupt().
+7️⃣ interrupt() vs stop() vs yield()
+Method	Behavior
+interrupt()	Requests thread to stop
+stop()	Forcefully stops (deprecated)
+yield()	Gives chance to other threads
+8️⃣ Interview-ready answer ⭐
+interrupt() is a method of the Thread class used to signal a thread that it should stop or change its execution. It does not stop the thread forcibly but sets an interrupt flag or throws InterruptedException if the thread is in a waiting or sleeping state.
+
+🔑 One-line memory trick
+interrupt = polite stop request
+whenever thread is in sleep mode then only we can call interrupt() then we get Interrupt exception
+when we create object at class level JVM will give you the null values 
+join() will throw nullPointerExeption
+when we declare reference variable 
+If we use Throws for Interrupted exception we must need to throws the parent class the same exception so that we keep join() with try catch
+
+*What is a Daemon Thread?
+👉 A daemon thread is a background thread that runs only to support user threads.
+📌 JVM rule:
+When all user (non-daemon) threads finish, JVM stops — even if daemon threads are still running.
+2️⃣ User Thread vs Daemon Thread
+User Thread	   Daemon Thread
+Does main work	Supports background work
+Keeps JVM alive	Does NOT keep JVM alive
+Example: main()	Example: Garbage Collector
+3️⃣ Real-life example 🌍
+User threads → Students writing exam
+Daemon thread → Sweeper cleaning classroom
+When students leave:
+Sweeper stops automatically
+4️⃣ Default behavior
+main thread → User thread
+Threads created by main → User threads by default
+Garbage Collector → Daemon thread
+5️⃣ How to create a daemon thread?
+⚠️ Important rule:
+You must set daemon BEFORE calling start()
+class MyThread extends Thread {
+    public void run() {
+        while (true) {
+            System.out.println("Daemon running...");
+        }
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        MyThread t = new MyThread();
+        t.setDaemon(true); // must be before start()
+        t.start();
+
+        System.out.println("Main thread ends");
+    }
+}
+Output:
+Main thread ends
+✔ JVM exits
+✔ Daemon thread stops automatically
+
+6️⃣ What happens if you set daemon after start()? ❌
+t.start();
+t.setDaemon(true); // ❌
+➡️ Runtime Exception:
+IllegalThreadStateException
+7️⃣ Can daemon threads do important work? ❌
+👉 NO
+JVM can stop daemon threads at any time
+They may not complete execution
+✔ Use daemon threads only for:
+Logging
+Monitoring
+Garbage collection
+Background cleanup
+8️⃣ How to check if a thread is daemon?
+boolean b = t.isDaemon();
+
+9️⃣ Daemon vs Normal Thread (quick table)
+Feature	Daemon Thread	User Thread
+JVM waits for it	❌ No	✅ Yes
+Purpose	Background support	Main logic
+GC example	✅	❌
+Risk of stopping	High	Low
+🔟 Interview-ready answer ⭐
+A daemon thread is a low-priority background thread that provides support to user threads. JVM does not wait for daemon threads to complete execution; once all user threads finish, daemon threads terminate automatically.
+🔑 One-line memory trick
+User thread = main work, Daemon thread = background helper
+Difference between Daemon Thread and Normal (User) Thread in Java 🧵
+I’ll explain this very clearly, with examples and an interview-ready table.
+1️⃣ Normal (User) Thread
+👉 A normal thread performs the main task of the application.
+JVM waits for it to finish
+Keeps the application alive
+Example: main() thread, business logic threads
+Thread t = new Thread(() -> System.out.println("User thread"));
+t.start();
+2️⃣ Daemon Thread
+👉 A daemon thread runs in the background to support user threads.
+JVM does NOT wait for it
+Automatically stops when all user threads finish
+Example: Garbage Collector
+Thread t = new Thread(() -> {
+    while(true) {
+        System.out.println("Daemon running");
+    }
+});
+t.setDaemon(true);
+t.start();
+3️⃣ Most important JVM rule ⭐
+JVM exits when all normal (user) threads finish, even if daemon threads are still running.
+4️⃣ Real-life example 🌍
+👩‍💼 Office employees → User threads
+🧹 Cleaner → Daemon thread
+When employees leave:
+Cleaner stops automatically
+5️⃣ Key Differences Table (Interview Gold)
+Feature	                   Normal Thread	Daemon Thread
+Purpose	               Main application work	Background support
+JVM waits for completion	 ✅ Yes	❌ No
+Keeps JVM alive          	✅ Yes	    ❌ No
+Priority	                Normal	Low
+Example                 	main()	Garbage Collector
+Risk of abrupt stop	❌ Low	✅ High
+Suitable for critical tasks	✅ Yes	  ❌ No
+6️⃣ Important rules ⚠️
+setDaemon(true) must be called before start()
+Changing daemon status after start → IllegalThreadStateException
+Daemon threads should not handle important logic (DB, files, payments)
+7️⃣ Interview-ready short answer ⭐
+A normal thread performs the main work of an application and keeps the JVM alive, whereas a daemon thread runs in the background to support user threads and does not prevent JVM termination.
+🔑 One-line memory trick
+User thread keeps JVM alive, daemon thread dies with JVM
+*Thread Life Cycle in Java — explained very clearly 🧵🔄
+This is very important for interviews. I’ll keep it simple, step-by-step.
+
+*1️⃣ States in Thread Life Cycle
+Java thread has 6 states:
+NEW
+ ↓ start()
+RUNNABLE
+ ↓ (CPU scheduling)
+RUNNING
+ ↓ wait/sleep/join
+WAITING / TIMED_WAITING / BLOCKED
+ ↓ notify / time over / lock acquired
+RUNNABLE
+ ↓ run() ends
+TERMINATED
+
+2️⃣ Each state explained simply
+🔹 1. NEW
+Thread object is created
+start() not called yet
+Thread t = new Thread();
+🔹 2. RUNNABLE
+start() is called
+Thread is ready to run
+Waiting for CPU time
+t.start();
+📌 In Java, RUNNABLE includes RUNNING
+🔹 3. RUNNING
+Thread is currently executing run()
+CPU is allocated
+🔹 4. BLOCKED
+Thread is waiting for a lock
+Happens in synchronized block
+synchronized(obj) {
+   // another thread holds lock
+}
+🔹 5. WAITING
+Thread waits indefinitely
+Until another thread calls notify() or notifyAll()
+obj.wait();
+t.join();
+🔹 6. TIMED_WAITING
+Thread waits for specific time
+Thread.sleep(1000);
+obj.wait(1000);
+t.join(1000);
+🔹 7. TERMINATED (Dead)
+run() method completed
+Thread is finished
+Cannot restart
+3️⃣ Simple example showing lifecycle
+class MyThread extends Thread {
+    public void run() {
+        try {
+            Thread.sleep(1000); // TIMED_WAITING
+        } catch (Exception e) {}
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        MyThread t = new MyThread(); // NEW
+        t.start();                  // RUNNABLE
+    }
+}
+
+4️⃣ Lifecycle with method mapping (Interview ⭐)
+Method	    State Change
+new  Thread()	NEW
+start()	  NEW → RUNNABLE
+CPU allocates	RUNNABLE → RUNNING
+sleep()	RUNNING → TIMED_WAITING
+wait()	RUNNING → WAITING
+Lock not available	RUNNING → BLOCKED
+notify()	WAITING → RUNNABLE
+Time over	TIMED_WAITING → RUNNABLE
+run() ends	RUNNING → TERMINATED
+5️⃣ Real-life example 🚦
+NEW → Car created
+RUNNABLE → Car ready on road
+RUNNING → Car moving
+BLOCKED → Traffic signal red
+WAITING → Waiting for green signal
+TERMINATED → Destination reached
+6️⃣ Interview-ready answer ⭐
+The thread life cycle in Java consists of states like New, Runnable, Running, Blocked, Waiting, Timed Waiting, and Terminated. A thread moves between these states based on method calls and CPU scheduling until it completes execution.
+🔑 One-line memory trick
+New → Runnable → Running → Waiting/Blocked → Runnable → Terminated
+
+*1️⃣ What is Locking?
+👉 Locking means allowing only one thread at a time to access a shared resource.
+In Java:
+Lock is taken using synchronized
+Lock belongs to an object
+synchronized(obj) {
+    // critical section
+}
+✔ Prevents data corruption
+✔ Ensures thread safety
+
+🔐 2️⃣ Why is Locking needed?
+
+Without locking:
+
+Two threads access same data
+
+Data becomes inconsistent
+
+Example (ATM 💳)
+
+Two users withdraw money at same time → ❌ wrong balance
+Lock ensures → one withdrawal at a time ✔
+
+3️⃣ Example of Locking
+class Account {
+    int balance = 1000;
+
+    synchronized void withdraw(int amt) {
+        balance -= amt;
+        System.out.println(balance);
+    }
+}
+
+
+✔ Only one thread can enter withdraw() at a time
+
+☠️ 4️⃣ What is Deadlock?
+
+👉 Deadlock happens when two or more threads wait forever for each other’s locks.
+
+📌 No thread can proceed
+📌 Program hangs
+
+5️⃣ Deadlock example (very important ⚠️)
+class DeadlockDemo {
+    static Object lock1 = new Object();
+    static Object lock2 = new Object();
+
+    public static void main(String[] args) {
+
+        Thread t1 = new Thread(() -> {
+            synchronized(lock1) {
+                System.out.println("T1 got lock1");
+                synchronized(lock2) {
+                    System.out.println("T1 got lock2");
+                }
+            }
+        });
+
+        Thread t2 = new Thread(() -> {
+            synchronized(lock2) {
+                System.out.println("T2 got lock2");
+                synchronized(lock1) {
+                    System.out.println("T2 got lock1");
+                }
+            }
+        });
+
+        t1.start();
+        t2.start();
+    }
+}
+
+What happens?
+
+T1 holds lock1 → waits for lock2
+
+T2 holds lock2 → waits for lock1
+
+❌ Infinite waiting = Deadlock
+
+6️⃣ Deadlock conditions (Coffman Conditions) ⭐
+
+Deadlock occurs only if ALL 4 conditions exist:
+
+Mutual exclusion – lock held by one thread
+
+Hold and wait – holding one lock, waiting for another
+
+No preemption – lock can’t be taken forcibly
+
+Circular wait – T1 → T2 → T1
+
+7️⃣ How to prevent Deadlock? ✅
+✔ 1. Lock ordering (Best method)
+
+Always acquire locks in same order
+
+synchronized(lock1) {
+    synchronized(lock2) {
+        // safe
+    }
+}
+
+✔ 2. Avoid nested locks
+
+Try not to lock multiple objects at once.
+
+✔ 3. Use tryLock() (Advanced)
+
+From java.util.concurrent.locks
+
+✔ 4. Use single lock
+
+Simpler design reduces risk.
+
+8️⃣ Locking vs Deadlock (Quick table)
+Locking	Deadlock
+Controls thread access	Stops threads forever
+Required for safety	Programming error
+Improves correctness	Freezes application
+9️⃣ Interview-ready answer ⭐
+
+Locking ensures that only one thread accesses a shared resource at a time, while deadlock is a situation where two or more threads wait indefinitely for each other’s locks, causing the program to freeze.
+
+🔑 One-line memory trick
+
+Locking protects data, Deadlock kills execution
+
+Thread.currentThread() will give number of thread and thread name priority of thread, currently running thread
+Thread.getPriority() 
+maxPriority();
+setName()
+getName()
+
+***SYNCHRONIZATION
+whenever we are working with multithreading where multiple threads are trying to access the resources in a given point of time in such cases there mighty be a chance of data inconsistency  problems will come to resolve those problems will use synchronization 
+synchronization will achieve with below concepts like 
+1) mutation
+synchronization for threads
+synchronization with blocks
+2) interthread communication
+wait() wai(long ms)  wait(long ms,long ns)
+notify() notifyAll()
+executing thread one after another is called as once one thread entered into synchronization block that will consider as a lock 
+until first thread releasing the lock no thread are unable to enter into the synchronized block 
+two threads are communicating then we need to an object give the communication between two threads 
+wait() interruptedException 
+IlligalMonitarStateException
+when we us wait inside the methods we must keep our method synchronizes 
+
+DeadLock
+setDaemon(true) it must be first before start()
+
+*If we call start() and run() at a time what will happen?
+java.lang.thread is a default package that is  why we are calling thread methods without creating any Thread object
+
+
+
+
+
+
+
+
+
+
